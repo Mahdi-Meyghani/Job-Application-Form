@@ -31,16 +31,27 @@ class Job(db.Model):
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        first_name = request.form["fname"]
-        last_name = request.form["lname"]
+        first_name = request.form["fname"].title()
+        last_name = request.form["lname"].title()
         email = request.form["email"]
         date = request.form["date"]
         date_obj = datetime.strptime(date, "%Y-%m-%d")
-        occupation = request.form["occupation"]
+        occupation = request.form["occupation"].title()
 
-        # model = Job(first_name=first_name, last_name=last_name, email=email, date=date_obj, occupation=occupation)
-        # db.session.add(model)
-        # db.session.commit()
+        model = Job(first_name=first_name, last_name=last_name, email=email, date=date_obj, occupation=occupation)
+        db.session.add(model)
+        db.session.commit()
+
+        body_message = (f"Thank your for registering {first_name.title()}\n"
+                        f"Here is your information:\n"
+                        f"{first_name}\n"
+                        f"{last_name}\n"
+                        f"{date}\n"
+                        f"{occupation}\n"
+                        f"I hope we will have a great EXPERIENCE !!")
+        message = Message(subject="New Job Submission.", sender=app.config["MAIL_USERNAME"],
+                          recipients=[email], body=body_message)
+        mail.send(message)
 
         flash(f"Hey {first_name}, your job is now live!", "success")
 
