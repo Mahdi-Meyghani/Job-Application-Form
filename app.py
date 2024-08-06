@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
 
@@ -15,6 +16,7 @@ app.config["MAIL_USERNAME"] = "boochip02@gmail.com"
 app.config["MAIL_PASSWORD"] = os.getenv("JobApplicationForm")
 
 db = SQLAlchemy(app)
+mail = Mail(app)
 
 
 class Job(db.Model):
