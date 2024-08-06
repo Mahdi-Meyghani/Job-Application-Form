@@ -9,6 +9,15 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 db = SQLAlchemy(app)
 
 
+class Job(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    first_name = db.Column(db.String(80))
+    last_name = db.Column(db.String(80))
+    email = db.Column(db.String(80))
+    date = db.Column(db.Date)
+    occupation = db.Column(db.String(80))
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
